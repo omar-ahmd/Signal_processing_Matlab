@@ -15,7 +15,7 @@ p = 3*cos(2*100*pi*t); % porteuse
 n=0.5; % indice de modulation
 s = (1 + n*m).*p; 
 
-
+plot(m)
 
 
 %II-b
@@ -61,9 +61,10 @@ title("n=1.5")
 
 
 %II-d
+
 figure(3)
 plot(m*mMax,s3) 
-
+grid on
 
 %II-e
 f = (-L/2:L/2-1)/(L/Fe);
@@ -98,7 +99,7 @@ s3_dem = s3.*(s3>0); % represente le diode
 
 [B,A] = butter(3,0.15,"low");
 Sm1 = filter(B,A,s1_dem);
-Sm3 = filter(B,A,s3_dem); %filtre passe bas por eliminer la frequence plus grande a 2wc
+Sm3 = filter(B,A,s3_dem); %filtre passe bas pour eliminer la frequence plus grande a 2wc
 
 %f2-f3
 figure(5)
@@ -118,8 +119,8 @@ plot(f,TF_Sm3)
 
 %f4
 [B,A] = butter(3,0.02,"low");
-Sm1 = (filter(B,A,Sm1) - 1)/n1;
-Sm3 = (filter(B,A,Sm3) - 1)/n3;
+Sm1 = (filter(B,A,s1_dem) - 1)/n1;
+Sm3 = (filter(B,A,s3_dem) - 1)/n3;
 
 %f5
 figure(6);
