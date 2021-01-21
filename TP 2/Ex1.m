@@ -1,18 +1,24 @@
-a = 10;
+a = 2;
 b = 10;
 A = 2;
 fc = 500;
 fDev = 50;
-tmin = -0.1;
-tmax = 0.1;
-L = 512;
+tmin = -0.2;
+tmax = 0.2;
+L = 4096;
 Fe = L/(tmax-tmin); %Fe = 4096
 Te = 1/Fe;
 t = linspace(tmin,tmax,L);
 f = (-L/2:L/2-1)/(L/Fe);
 
-%% Initialisation des signaux
+% Initialisation des signaux
+syms t
 m = a * cos(2*pi*b*t);
+Im =  int(m);
+t = linspace(tmin,tmax,L);
+m=double(subs(m));
+Im = double(subs(Im));
+
 pq = A * cos(2*pi*fc*t);
 M = fftshift(abs(fft(m,L)));
 P = fftshift(abs(fft(pq,L)));
@@ -29,18 +35,20 @@ plot(f,P)
 
 %% Modulation FM
 % a
-y = fmmod(m,fc,Fe,fDev);
+
+mFM = A*cos(2*pi*(fc*t + (fDev)*Im));
 figure('Name','Modulation FM')
-plot(t,y)
-hold on
+subplot(211)
+plot(t,mFM)
+subplot(212)
 plot(t,m)
 
 %b-c
 b=10;
 m = a * cos(2*pi*b*t);
-y1 = fmmod(m,fc,Fe,40);
-y2 = fmmod(m,fc,Fe,50);
-y3 = fmmod(m,fc,Fe,60);
+y1 = A*cos(2*pi*fc*t + (40*2*pi/max(m))*Im);
+y2 = A*cos(2*pi*fc*t + (50*2*pi/max(m))*Im);
+y3 = A*cos(2*pi*fc*t + (60*2*pi/max(m))*Im);
 
 sf1 = fftshift(abs(fft(y1,L)));
 sf2 = fftshift(abs(fft(y2,L)));
@@ -62,13 +70,26 @@ subplot(326)
 plot(f,sf3)
 
 %d
+
+syms t
+
 m1 = a * cos(2*pi*10*t);
 m2 = a * cos(2*pi*15*t);
 m3 = a * cos(2*pi*20*t);
+t = linspace(tmin,tmax,L);
+Im1 =  int(m1);
 
-y1 = fmmod(m1,fc,Fe,60);
-y2 = fmmod(m2,fc,Fe,60);
-y3 = fmmod(m3,fc,Fe,60);
+Im1 = double(subs(Im1));
+Im2 =  int(m2);
+Im2 = double(subs(Im2));
+Im3 =  int(m3);
+Im3 = double(subs(Im3));
+
+y1 = A*cos(2*pi*fc*t + (60*2*pi/a)*Im1);
+y2 = A*cos(2*pi*fc*t + (60*2*pi/a)*Im2);
+y3 = A*cos(2*pi*fc*t + (60*2*pi/a)*Im3);
+
+
 
 
 sf1 = fftshift(abs(fft(y1,L)));
@@ -91,24 +112,31 @@ subplot(326)
 plot(f,sf3)
 
 %% Modulation PM
-a=10;
-b=10;
+syms t
 m = a * cos(2*pi*b*t);
-y = pmmod(m,fc,Fe,5);
+t = linspace(tmin,tmax,L);
+m = double(subs(m));
+dm = diff(m);
+dm = double(subs(dm));
+
+y = A*cos(2*fc*pi*t + (5)*m);
+
 
 figure('Name','Modulation PM')
 plot(t,y)
 hold on
 plot(t,m)
 
-%% Multiplieur de frequence
-%a
+% Multiplieur de frequence
+a
 fc=10;
 
 pq = (A * cos(2*pi*fc*t)).^4;
 TF_P = fftshift(abs(fft(pq,L)));
 
-pF = bandpass(pq,[39 41],Fe);
+
+
+pF = bandpass(pq,[39 41],Fe)
 TF_PF = fftshift(abs(fft(pF,L)));
 
 figure('Name','Multiplieur de freqence 40HZ')

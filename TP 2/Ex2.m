@@ -5,9 +5,9 @@ b = 10;
 A = 2;
 fc = 500;
 fDev = 50;
-tmin = -0.5;
-tmax = 0.5;
-L = 4096;
+tmin = -0.1;
+tmax = 0.1;
+L = 8192;
 Fe = L/(tmax-tmin); %Fe = 4096
 Te = 1/Fe;
 t = linspace(tmin,tmax,L);
@@ -56,7 +56,7 @@ figure('Name','demodulation FM')
 plot(t(1:length(Ydem)),Ydem)
 hold on
 ydem =(Sm1-mean(Sm1));
-ydem = max(m)/max(ydem(L/2:end)) .* ydem; 
+ydem = (Fe/(2*pi*fDev)) .* ydem; 
 plot(t(1:length(Ydem)),ydem)
 hold on 
 plot(t,m)
@@ -79,10 +79,13 @@ plot(t,y)
 
 Tfpulses = fftshift(abs(fft(pulses,L)));
 [B,A] = butter(5,0.01,"low");
-Sm1 = filter(B,A,pulses);
+Sm1 = (Fe/(2*pi*fDev)) * filter(B,A,pulses);
 hold on
 plot(t,Sm1-mean(Sm1),'b')
-
+% hold on
+% plot(t, fmdemod(y,500,Fe,50))
+hold on
+plot(t,m)
 %c  PM demodulation
 
 y = pmmod(m,500,Fe,5);
