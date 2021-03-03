@@ -28,6 +28,11 @@ s1 = (1 + n1*m).*p;
 s2 = (1 + n2*m).*p; 
 s3 = (1 + n3*m).*p; 
 figure(1)
+plot(m)
+title("m")
+
+
+figure(2)
 subplot(221)
 plot(s0)
 title("n=0")
@@ -45,7 +50,7 @@ title("n=1.5")
 
 
 %II-c
-figure(2)
+figure(3)
 subplot(221)
 plot(1)
 title("n=0")
@@ -62,9 +67,26 @@ title("n=1.5")
 
 %II-d
 
-figure(3)
+
+
+
+figure(4)
+subplot(221)
+plot(m*mMax,s0)
+grid on
+title("n=0")
+subplot(222)
+plot(m*mMax,s1)
+grid on
+title("n=0.5")
+subplot(223)
+plot(m*mMax,s2) 
+grid on
+title("n=1")
+subplot(224)
 plot(m*mMax,s3) 
 grid on
+title("n=1.5")
 
 %II-e
 f = (-L/2:L/2-1)/(L/Fe);
@@ -74,7 +96,7 @@ TF_S1 = fftshift(abs(fft(s1,L)));
 TF_S2 = fftshift(abs(fft(s2,L)));
 TF_S3 = fftshift(abs(fft(s3,L)));
 
-figure(4)
+figure(5)
 subplot(221)
 plot(f,TF_S0)
 title("n=0")
@@ -99,33 +121,38 @@ s3_dem = s3.*(s3>0); % represente le diode
 
 [B,A] = butter(3,0.15,"low");
 Sm1 = filter(B,A,s1_dem);
-Sm3 = filter(B,A,s3_dem); %filtre passe bas pour eliminer la frequence plus grande a 2wc
+Sm3 = filter(B,A,s3_dem); %filtre passe bas pour eliminer la frequence plus grande que 2wc
 
 %f2-f3
-figure(5)
+figure(6)
 subplot(221)
 plot(Sm1)
-
+title('n=0.5')
 subplot(222)
 TF_Sm1 = fftshift(abs(fft(Sm1,L)));
 plot(f,TF_Sm1)
+title('n=0.5')
 
 subplot(223)
 plot(Sm3)
-
+title('n=1.5')
 subplot(224)
 TF_Sm3 = fftshift(abs(fft(Sm3,L)));
 plot(f,TF_Sm3)
-
+title('n=1.5')
 %f4
 [B,A] = butter(3,0.02,"low");
 Sm1 = (filter(B,A,s1_dem) - 1)/n1;
 Sm3 = (filter(B,A,s3_dem) - 1)/n3;
 
 %f5
-figure(6);
+figure(7);
 plot(t,m);
+
 hold on;
 plot(t,Sm1);
+
+
 hold on;
 plot(t,Sm3);
+

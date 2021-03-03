@@ -50,6 +50,7 @@ TfYdem = fftshift(abs(fft(Ydem,L)));
 Sm1 = filter(B,A,Ydem);
 TfSm1 = fftshift(abs(fft(Sm1,L)));
 plot(f,TfSm1)
+
 %%%%%
 
 figure('Name','demodulation FM')
@@ -86,6 +87,8 @@ plot(t,Sm1-mean(Sm1),'b')
 % plot(t, fmdemod(y,500,Fe,50))
 hold on
 plot(t,m)
+
+
 %c  PM demodulation
 
 y = pmmod(m,500,Fe,5);

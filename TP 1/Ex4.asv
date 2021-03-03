@@ -63,16 +63,17 @@ hold on
 plot(t,SFm3)
 
 figure('Name','Partie C2 FREQUENCY')
-subplot(231);
+subplot(321);
 plot(f,TF_Sd1)
-subplot(232)
+subplot(322)
 plot(f,TF_Sd2)
-subplot(233)
+subplot(323)
 plot(f,TF_Sd3)
 
-subplot(234);
+figure('Name','Partie C2 FREQUENCY')
+subplot(324);
 plot(f,TF_SFd1)
-subplot(235)
+subplot(325)
 plot(f,TF_SFd2)
-subplot(236)
+subplot(326)
 plot(f,TF_SFd3)
